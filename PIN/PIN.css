@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #2f2fd4;
+    font-family: Arial, sans-serif;
+}
+
+.pin-container {
+    background-color: #3a3ab3;
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    width: 150px;
+    margin-right: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.time {
+    font-size: 14px;
+}
+
+.pin-section h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.pin-display {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.pin-digit {
+    width: 50px;
+    height: 70px;
+    font-size: 32px;
+    border: 2px solid white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2f2fd4;
+    color: white;
+    font-family: monospace;
+}
+
+.pin-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pin-btn {
+    width: 100%;
+    padding: 20px;
+    font-size: 24px;
+    color: white;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.pin-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.delete-btn {
+    color: #d0021b;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.exit-btn {
+    background-color: #e74c3c;
+    padding: 10px 20px;
+}
+
+.confirm-btn {
+    background-color: #2980b9;
+    padding: 10px 20px;
+}

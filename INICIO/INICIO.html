@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Selección de Servicio</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="inicio.css">
+    <!-- Incluir SweetAlert desde un CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="inicio-container">
+        <div class="header">
+            <span>HI, JOHN</span>
+            <div class="logo">
+                <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
+            </div>
+            <div class="time">
+                <span>10:05 AM, 9 AUG</span>
+            </div>
+        </div>
+
+        <h2>SELECCIONE UN SERVICIO</h2>
+
+        <div class="services">
+            <button class="service-btn" onclick="location.href='../DEPOSITO/deposito.html'">DEPÓSITO</button>
+            <button class="service-btn">CONSULTA DE SALDO</button>
+            <button class="service-btn" onclick="location.href='../RETIRO/retiro.html'">RETIRO</button>
+            <button class="service-btn">PAGO DE SERVICIOS</button>
+            <button class="service-btn">HISTORIAL DE TRANSACCIONES</button>
+        </div>
+
+        <div class="buttons">
+            <!-- Botón de salir con SweetAlert -->
+            <button class="btn btn-danger exit-btn" onclick="confirmarSalida()">SALIR</button>
+        </div>
+    </div>
+
+    <script>
+        // Función que muestra la alerta de advertencia de SweetAlert
+        function confirmarSalida() {
+            Swal.fire({
+                title: 'Está a punto de salir',
+                text: '¿Desea continuar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirige a la página de inicio (index.html) si confirma
+                    window.location.href = '../index.html';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #2f2fd4;
+    font-family: Arial, sans-serif;
+}
+
+.inicio-container {
+    text-align: center;
+    color: white;
+    background-color: #3a3ab3;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px; 
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 80px; /* Tamaño del logo */
+}
+
+.time {
+    font-size: 14px;
+}
+
+h2 {
+    margin-bottom: 30px;
+}
+
+.services {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.service-btn {
+    background-color: white;
+    color: #2f2fd4;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.service-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.exit-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.exit-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Media para pantallas mas pequeñas*/
+@media (max-width: 768px) {
+    .services {
+        grid-template-columns: 1fr; /* Los botones de servicio se colocan en una columna */
+    }
+
+    .service-btn {
+        padding: 15px; /* Ajustar el tamaño de los botones en pantallas pequeñas */
+        font-size: 14px;
+    }
+
+    .logo img {
+        width: 60px; /* Reducir el tamaño del logo en pantallas más pequeñas */
+    }
+}

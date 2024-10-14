@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingrese su PIN</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="pin.css">
+</head>
+<body>
+    <div class="pin-container">
+        <div class="header">
+            <div class="logo">
+                <img src="../IMAGENES/pokemon_bank_logo.png" alt="Pokemon logo">
+            </div>
+            <div class="time">
+                <span>10:05 AM, 9 AUG</span>
+            </div>
+        </div>
+        
+        <div class="pin-section">
+            <h2>Ingrese su PIN</h2>
+            <div class="pin-display">
+                <div class="pin-digit" id="digit1"></div>
+                <div class="pin-digit" id="digit2"></div>
+                <div class="pin-digit" id="digit3"></div>
+                <div class="pin-digit" id="digit4"></div>
+            </div>
+            <div class="pin-pad">
+                <button class="pin-btn">1</button>
+                <button class="pin-btn">2</button>
+                <button class="pin-btn">3</button>
+                <button class="pin-btn">4</button>
+                <button class="pin-btn">5</button>
+                <button class="pin-btn">6</button>
+                <button class="pin-btn">7</button>
+                <button class="pin-btn">8</button>
+                <button class="pin-btn">9</button>
+                <button class="pin-btn">0</button>
+                <button class="pin-btn delete-btn">&lt;</button>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <!-- Boton para regresar a index.html -->
+            <button class="btn btn-danger exit-btn" onclick="location.href='../index.html'">REGRESAR</button>
+            <!-- Boton para ir a inicio.html -->
+            <button class="btn btn-primary confirm-btn" onclick="location.href='../INICIO/inicio.html'">CONFIRMAR</button>
+        </div>
+    </div>
+
+</body>
+</html>
