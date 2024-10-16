@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar Servicio</title>
+    <link href="pago_servicio.css" rel="stylesheet">
+    <!-- Incluir SweetAlert desde un CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="inicio-container">
+        <div class="header">
+            <span>Ash Ketchum</span>
+            <div class="logo">
+                <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
+            </div>
+            <div class="time">
+                <span>10:05 AM, 14 Octubre</span>
+            </div>
+        </div>
+
+        <h2>PAGAR SERVICIO</h2>
+        <p>Usted está pagando el servicio de <span id="servicio"></span></p>
+        <p>Monto a pagar: <span id="monto">$350.00</span></p>
+
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="pagarServicio()">PAGAR</button>
+            <button class="btn btn-danger" onclick="cancelarPago()">CANCELAR</button>
+        </div>
+    </div>
+
+    <script>
+        // Obtener el nombre del servicio seleccionado de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const servicio = urlParams.get('servicio');
+        document.getElementById('servicio').textContent = servicio;
+
+        // Función para pagar el servicio (mostrar alerta)
+        function pagarServicio() {
+            Swal.fire({
+                title: 'Pago Exitoso',
+                text: `El pago del servicio de ${servicio} se ha realizado con éxito.`,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirige a la página de inicio
+                    window.location.href = '../INICIO/inicio.html';
+                }
+            });
+        }
+
+        // Función para cancelar el pago (mostrar alerta)
+        function cancelarPago() {
+            Swal.fire({
+                title: 'Cancelar Pago',
+                text: '¿Está seguro que desea cancelar el pago?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cancelar',
+                cancelButtonText: 'No, continuar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirige a la página de inicio si confirma cancelar
+                    window.location.href = 'servicios.html';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

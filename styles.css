@@ -1,12 +1,16 @@
+/* Estilo general */
 body {
     margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     background-color: black;
 }
 
 .carousel-container {
     perspective: 1000px;
-    width: 100%;
-    max-width: 300px;
+    width: 300px;
     height: 200px;
     position: relative;
 }
@@ -26,38 +30,44 @@ body {
     background-size: cover;
     background-position: center;
     border-radius: 10px;
+    border: none;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     backface-visibility: visible;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3em;
+    font-size: 2em;
     font-weight: bold;
     color: white;
-    text-decoration: none; /* Quita el subrayado de los enlaces */
-    transition: box-shadow 0.3s ease;
+    text-align: center;
+    transition: box-shadow 0.3s; /* Solo el cambio de resplandor */
 }
 
-.card:hover {
-    box-shadow: 0 0 30px 15px rgba(255, 255, 255, 0.5); /* Luz blanca inicial */
+/* Efecto de resplandor al hacer hover (pasar el mouse por encima) */
+.carousel .card:hover {
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.6); /* Resplandor */
 }
 
+/* Tarjeta personalizada (Tarjeta 1) con la imagen de fondo */
 .card1 {
-    background-color: #4a90e2;
+    background-image: url('IMAGENES/TarjetaAshKetcum.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
     transform: rotateY(0deg) translateZ(300px);
 }
 
-.card1:hover {
-    box-shadow: 0 0 30px 15px rgba(74, 144, 226, 0.7); /* Brillo azul */
-}
-
+/* Tarjeta personalizada (Tarjeta 2) con la imagen de fondo */
 .card2 {
-    background-color: #50e3c2;
+    background-image: url('IMAGENES/TarjetaLisandroBerdugo.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
     transform: rotateY(72deg) translateZ(300px);
-}
-
-.card2:hover {
-    box-shadow: 0 0 30px 15px rgba(80, 227, 194, 0.7); /* Brillo verde */
 }
 
 .card3 {
@@ -65,17 +75,9 @@ body {
     transform: rotateY(144deg) translateZ(300px);
 }
 
-.card3:hover {
-    box-shadow: 0 0 30px 15px rgba(245, 166, 35, 0.7); /* Brillo naranja */
-}
-
 .card4 {
     background-color: #d0021b;
     transform: rotateY(216deg) translateZ(300px);
-}
-
-.card4:hover {
-    box-shadow: 0 0 30px 15px rgba(208, 2, 27, 0.7); /* Brillo rojo */
 }
 
 .card5 {
@@ -83,26 +85,20 @@ body {
     transform: rotateY(288deg) translateZ(300px);
 }
 
-.card5:hover {
-    box-shadow: 0 0 30px 15px rgba(144, 19, 254, 0.7); /* Brillo púrpura */
-}
-
-/* Controles */
+/* Botones de control */
 .controls {
     position: absolute;
-    bottom: -80px;
+    bottom: -125px; /* Movemos los botones hacia abajo */
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
 }
 
-/* Ajustes responsivos */
-@media (max-width: 768px) {
-    .carousel-container {
-        max-width: 250px;
-        height: 150px;
-    }
-    .carousel .card {
-        font-size: 2em;
-    }
+.controls button {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
 }

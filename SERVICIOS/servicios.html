@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago de Servicios</title>
+    <link href="pago_servicios.css" rel="stylesheet">
+    <!-- Incluir SweetAlert desde un CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="inicio-container">
+        <div class="header">
+            <span>Ash Ketchum</span>
+            <div class="logo">
+                <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
+            </div>
+            <div class="time">
+                <span>10:05 AM, 14 Octubre</span>
+            </div>
+        </div>
+
+        <h2>PAGO DE SERVICIOS</h2>
+        <p>Seleccione un servicio para pagar:</p>
+
+        <!-- Selección de servicios -->
+        <div class="services">
+            <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=LUZ'">LUZ</button>
+            <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=AGUA'">AGUA</button>
+            <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=INTERNET'">INTERNET</button>
+            <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=TELEFONO'">TELÉFONO</button>
+        </div>
+
+        <div class="buttons">
+            <!-- Botón para regresar a la pantalla de inicio -->
+            <a href="../INICIO/inicio.html" class="btn btn-primary">VOLVER</a>
+        </div>
+    </div>
+</body>
+</html>

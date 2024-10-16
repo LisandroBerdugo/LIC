@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #2f2fd4;
+    font-family: Arial, sans-serif;
+}
+
+.inicio-container {
+    text-align: center;
+    color: white;
+    background-color: #3a3ab3;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 80px;
+}
+
+.time {
+    font-size: 14px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.services {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.service-btn {
+    background-color: #2980b9;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.service-btn:hover {
+    background-color: #1f6c8f;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #2980b9;
+}
+
+.btn-primary:hover {
+    background-color: #1f6c8f;
+}
