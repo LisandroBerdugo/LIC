@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Transacciones</title>
     <link href="historial.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js -->
 </head>
 <body>
     <div class="inicio-container">
         <div class="header">
-            <span>Ash Ketchum</span>
+            <span id="user-name">Ash Ketchum</span>
             <div class="logo">
                 <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
             </div>
-            <div class="time">
-                <span>10:05 AM, 14 Octubre</span>
-            </div>
+            <div class="time" id="time"></div>
         </div>
 
         <h2>HISTORIAL DE TRANSACCIONES</h2>
@@ -25,58 +25,30 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Saldo Inicial</th>
                         <th>Depósitos</th>
                         <th>Retiros</th>
                         <th>Pago de servicios</th>
+                        <th>Saldo Final</th>
                         <th>Fecha</th>
-                        <th>Saldo</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>$100.00</td>
-                        <td></td>
-                        <td></td>
-                        <td>1/10/2024</td>
-                        <td>$5,000.00</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>$500.00</td>
-                        <td></td>
-                        <td>2/10/2024</td>
-                        <td>$5,100.00</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>$600.00</td>
-                        <td></td>
-                        <td>3/10/2024</td>
-                        <td>$4,600.00</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>$100.00</td>
-                        <td>4/10/2024</td>
-                        <td>$4,000.00</td>
-                    </tr>
-                    <tr>
-                        <td>$1,100.00</td>
-                        <td></td>
-                        <td></td>
-                        <td>5/10/2024</td>
-                        <td>$3,900.00</td>
-                    </tr>
-                    <tr>
-                        <td>$1,000.00</td>
-                        <td></td>
-                        <td></td>
-                        <td>6/10/2024</td>
-                        <td>$5,000.00</td>
-                    </tr>
+                <tbody id="transaction-body">
+                    <!-- Filas de transacciones se agregarán aquí -->
                 </tbody>
             </table>
+        </div>
+
+        <!-- Contenedor de las gráficas -->
+        <div class="chart-container">
+            <div class="chart-item">
+                <h3>Ingresos vs. Egresos</h3>
+                <canvas id="balanceChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <h3>Detalle de Movimientos</h3>
+                <canvas id="transactionBreakdownChart"></canvas>
+            </div>
         </div>
 
         <div class="buttons">
@@ -84,5 +56,162 @@
             <a href="../INICIO/inicio.html" class="btn btn-primary">VOLVER</a>
         </div>
     </div>
+
+    <script>
+        // Función para actualizar la fecha y hora
+        function updateDateTime() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.toLocaleString('default', { month: 'long' });
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('time').textContent = `${day} ${month}, ${hours}:${minutes}`;
+        }
+
+        // Función para mostrar el nombre del usuario
+        function mostrarNombreUsuario() {
+            const selectedCardIndex = localStorage.getItem('selectedCard');
+            const cardInfo = {
+                0: 'Ash Ketchum',
+                1: 'Misty Waterflower',
+                2: 'Brock Harrison',
+                3: 'Gary Oak',
+                4: 'Team Rocket'
+            };
+            document.getElementById('user-name').textContent = cardInfo[selectedCardIndex] || "Usuario Desconocido";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDateTime();
+            mostrarNombreUsuario();
+            cargarHistorialTransacciones();
+            generarGraficaIngresosEgresos();
+            generarGraficaDetalleMovimientos();
+            setInterval(updateDateTime, 60000); // Actualizar la hora cada minuto
+        });
+
+        // Función para cargar el historial de transacciones desde localStorage
+        function cargarHistorialTransacciones() {
+            const transactionBody = document.getElementById('transaction-body');
+            const transactions = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+            // Limpiar el contenido previo de la tabla
+            transactionBody.innerHTML = "";
+
+            transactions.forEach(transaccion => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>$${transaccion.saldoInicial.toFixed(2)}</td>
+                    <td>${transaccion.tipo === 'deposito' ? `$${transaccion.monto.toFixed(2)}` : ''}</td>
+                    <td>${transaccion.tipo === 'retiro' ? `$${transaccion.monto.toFixed(2)}` : ''}</td>
+                    <td>${transaccion.tipo === 'servicio' ? `$${transaccion.monto.toFixed(2)}` : ''}</td>
+                    <td>$${transaccion.saldoFinal.toFixed(2)}</td>
+                    <td>${transaccion.fecha}</td>
+                `;
+                transactionBody.appendChild(row);
+            });
+        }
+
+        // Función para generar la gráfica de ingresos y egresos
+        function generarGraficaIngresosEgresos() {
+            const canvas = document.getElementById('balanceChart');
+            canvas.width = 220; // Fija el ancho del canvas
+            canvas.height = 220; // Fija el alto del canvas
+
+            const transactions = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+            let ingresos = 0;
+            let egresos = 0;
+
+            transactions.forEach(transaccion => {
+                if (transaccion.tipo === 'deposito') {
+                    ingresos += transaccion.monto;
+                } else if (transaccion.tipo === 'retiro' || transaccion.tipo === 'servicio') {
+                    egresos += transaccion.monto;
+                }
+            });
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Ingresos', 'Egresos'],
+                    datasets: [{
+                        data: [ingresos, egresos],
+                        backgroundColor: ['#4CAF50', '#F44336']
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `${tooltipItem.label}: $${tooltipItem.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para generar la gráfica de detalle de movimientos
+        function generarGraficaDetalleMovimientos() {
+            const canvas = document.getElementById('transactionBreakdownChart');
+            canvas.width = 220; // Fija el ancho del canvas
+            canvas.height = 220; // Fija el alto del canvas
+
+            const transactions = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+            let depositos = 0;
+            let retiros = 0;
+            let servicios = 0;
+
+            transactions.forEach(transaccion => {
+                if (transaccion.tipo === 'deposito') {
+                    depositos += transaccion.monto;
+                } else if (transaccion.tipo === 'retiro') {
+                    retiros += transaccion.monto;
+                } else if (transaccion.tipo === 'servicio') {
+                    servicios += transaccion.monto;
+                }
+            });
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Depósitos', 'Retiros', 'Pagos de Servicios'],
+                    datasets: [{
+                        data: [depositos, retiros, servicios],
+                        backgroundColor: ['#4CAF50', '#FF9800', '#F44336']
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `${tooltipItem.label}: $${tooltipItem.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>

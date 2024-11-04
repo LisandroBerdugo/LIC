@@ -1,3 +1,4 @@
+/* Estilos generales */
 body {
     margin: 0;
     padding: 0;
@@ -39,6 +40,7 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* Estilos para la tabla de transacciones */
 .transactions-table {
     margin-bottom: 20px;
     overflow-x: auto;
@@ -69,6 +71,7 @@ tbody tr:nth-child(odd) {
     background-color: #3a3ab3;
 }
 
+/* Estilos de los botones */
 .buttons {
     display: flex;
     justify-content: center;
@@ -91,4 +94,34 @@ tbody tr:nth-child(odd) {
 
 .btn-primary:hover {
     background-color: #1f6c8f;
+}
+
+/* Estilos de las gráficas */
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.chart-item {
+    width: 250px;
+    text-align: center;
+}
+
+.chart-item canvas {
+    width: 220px !important;
+    height: 220px !important;
+}
+
+.chart-item h3 {
+    color: white;
+    font-size: 1.1em;
+}
+
+/* Color blanco para las etiquetas y leyendas de Chart.js */
+.chartjs-render-monitor {
+    color: white !important;
 }

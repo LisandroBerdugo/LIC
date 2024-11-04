@@ -1,15 +1,17 @@
 body {
-    margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     background-color: #2f2fd4;
     font-family: Arial, sans-serif;
 }
 
-.inicio-container {
+.contenedor {
+    height: 100vh;
+}
+
+.panel {
+    margin-top: 100px;
     text-align: center;
     color: white;
     background-color: #3a3ab3;
@@ -36,7 +38,7 @@ body {
 }
 
 h2 {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .single-line-display {
@@ -98,7 +100,15 @@ h2 {
     color: white;
 }
 
+.btn-primary:hover {
+    background-color: #1f6c8f;
+}
+
 .btn-danger {
     background-color: #e74c3c;
     color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
 }

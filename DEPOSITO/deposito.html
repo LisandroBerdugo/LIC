@@ -5,20 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Depósito</title>
     <link href="deposito.css" rel="stylesheet">
-    <!-- Incluir SweetAlert desde un CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> <!-- jsPDF -->
 </head>
 <body>
     <div class="contenedor">
         <div class="panel">
             <div class="header">
-                <span>Ash Ketchums</span>
+                <span id="user-name">Nombre del Usuario</span>
                 <div class="logo">
                     <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
                 </div>
-                <div class="time">
-                    <span>10:05 AM, 14 Octubre</span>
-                </div>
+                <div class="time" id="time"></div>
             </div>
 
             <h2>DEPÓSITO</h2>
@@ -26,49 +24,147 @@
 
             <!-- Muestra el monto -->
             <div class="single-line-display">
-                <input type="text" class="amount-input" placeholder="0.00" disabled>
+                <input type="text" id="amountInput" class="amount-input" placeholder="0.00" disabled>
             </div>
 
             <!-- Teclado -->
             <div class="keypad">
-                <button class="key">1</button>
-                <button class="key">2</button>
-                <button class="key">3</button>
-                <button class="key">4</button>
-                <button class="key">5</button>
-                <button class="key">6</button>
-                <button class="key">7</button>
-                <button class="key">8</button>
-                <button class="key">9</button>
-                <button class="key">←</button>
-                <button class="key">0</button>
-                <button class="key">C</button>
+                <button class="key" onclick="ingresarCantidad('1')">1</button>
+                <button class="key" onclick="ingresarCantidad('2')">2</button>
+                <button class="key" onclick="ingresarCantidad('3')">3</button>
+                <button class="key" onclick="ingresarCantidad('4')">4</button>
+                <button class="key" onclick="ingresarCantidad('5')">5</button>
+                <button class="key" onclick="ingresarCantidad('6')">6</button>
+                <button class="key" onclick="ingresarCantidad('7')">7</button>
+                <button class="key" onclick="ingresarCantidad('8')">8</button>
+                <button class="key" onclick="ingresarCantidad('9')">9</button>
+                <button class="key" onclick="borrarUltimo()">←</button>
+                <button class="key" onclick="ingresarCantidad('0')">0</button>
+                <button class="key" onclick="borrarTodo()">C</button>
             </div>
 
             <div class="buttons">
-                <!-- Botón que muestra SweetAlert -->
-                <button class="btn btn-primary" type="button" onclick="mostrarAlerta()">CONFIRMAR</button>
-                <!-- Botón que muestra la alerta de salida -->
+                <button class="btn btn-primary" type="button" onclick="confirmarDeposito()">CONFIRMAR</button>
                 <button class="btn btn-danger" type="button" onclick="confirmarSalida()">CANCELAR</button>
             </div>
         </div>
     </div>
-    
 
     <script>
-        // Función que muestra la alerta de transacción exitosa
-        function mostrarAlerta() {
+        // Función para actualizar la fecha y hora en el formato deseado
+        function updateDateTime() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.toLocaleString('default', { month: 'long' });
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('time').textContent = `${day} ${month}, ${hours}:${minutes}`;
+        }
+
+        // Función para mostrar el nombre del usuario
+        function mostrarNombreUsuario() {
+            const selectedCardIndex = localStorage.getItem('selectedCard');
+            const cardInfo = {
+                0: 'Ash Ketchum',
+                1: 'Misty Waterflower',
+                2: 'Brock Harrison',
+                3: 'Gary Oak',
+                4: 'Team Rocket'
+            };
+            document.getElementById('user-name').textContent = cardInfo[selectedCardIndex] || "Usuario Desconocido";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDateTime();
+            mostrarNombreUsuario();
+            setInterval(updateDateTime, 60000); // Actualizar la hora cada minuto
+        });
+
+        // Variables para el monto ingresado
+        let monto = "";
+
+        // Función para ingresar la cantidad desde el teclado
+        function ingresarCantidad(num) {
+            if (monto.length < 7) { // Limitar el número de dígitos
+                monto += num;
+                actualizarDisplay();
+            }
+        }
+
+        // Función para borrar el último dígito ingresado
+        function borrarUltimo() {
+            monto = monto.slice(0, -1);
+            actualizarDisplay();
+        }
+
+        // Función para borrar todo el monto ingresado
+        function borrarTodo() {
+            monto = "";
+            actualizarDisplay();
+        }
+
+        // Función para actualizar el display de monto
+        function actualizarDisplay() {
+            const display = document.getElementById("amountInput");
+            display.value = parseFloat(monto / 100).toFixed(2); // Formato de dos decimales
+        }
+
+        // Función para confirmar el depósito
+        function confirmarDeposito() {
+            const cantidad = parseFloat(monto / 100);
+            if (cantidad < 5 || cantidad > 1000) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Cantidad no válida',
+                    text: 'El depósito debe ser entre $5.00 y $1000.00.',
+                });
+                return;
+            }
+
+            const saldoAnterior = obtenerSaldo(); // Obtener el saldo actual antes del depósito
+            realizarDeposito(cantidad); // Realizar el depósito
+            const nuevoSaldo = obtenerSaldo(); // Obtener el nuevo saldo después del depósito
+
+            // Registrar la transacción en el historial
+            registrarTransaccion("deposito", cantidad, saldoAnterior, nuevoSaldo);
+
             Swal.fire({
-                title: '¡Transacción Exitosa!',
-                text: 'Su transacción fue realizada con éxito.',
                 icon: 'success',
-                confirmButtonText: 'OK'
+                title: '¡Depósito Exitoso!',
+                text: `Se ha depositado $${cantidad.toFixed(2)} a su cuenta.`,
+                confirmButtonText: 'Sí, generar ticket',
+                showCancelButton: true,
+                cancelButtonText: 'No, regresar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Redirige a la página de inicio después de confirmar
-                    window.location.href = '../INICIO/inicio.html';
+                    generarTicketPDF(cantidad, saldoAnterior, nuevoSaldo); // Genera el ticket con los detalles
                 }
+                window.location.href = '../INICIO/inicio.html'; // Redirige a la pantalla de inicio en ambos casos
             });
+        }
+
+        // Función para generar el ticket en PDF con el monto del depósito, saldo anterior y nuevo saldo
+        function generarTicketPDF(cantidad, saldoAnterior, nuevoSaldo) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const userName = document.getElementById('user-name').textContent;
+            const fecha = new Date();
+
+            // Establecer el contenido del PDF
+            doc.setFontSize(18);
+            doc.text("Ticket de Depósito", 20, 20);
+
+            doc.setFontSize(14);
+            doc.text(`Nombre: ${userName}`, 20, 40);
+            doc.text(`Fecha: ${fecha.toLocaleDateString()}`, 20, 50);
+            doc.text(`Hora: ${fecha.toLocaleTimeString()}`, 20, 60);
+            doc.text(`Monto Depositado: $${cantidad.toFixed(2)}`, 20, 80);
+            doc.text(`Saldo Anterior: $${saldoAnterior.toFixed(2)}`, 20, 90);
+            doc.text(`Nuevo Saldo: $${nuevoSaldo.toFixed(2)}`, 20, 100);
+
+            // Descargar el PDF
+            doc.save("Ticket_Deposito.pdf");
         }
 
         // Función que muestra la alerta de confirmación de salida
@@ -84,10 +180,37 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Redirige a la página de inicio si confirma
-                    window.location.href = '../INICIO/inicio.html';
+                    window.location.href = '../INICIO/inicio.html'; // Redirige a la página de inicio si confirma
                 }
             });
+        }
+
+        // Funciones auxiliares para manejo de saldo
+        function obtenerSaldo() {
+            return parseFloat(localStorage.getItem('saldo')) || 0;
+        }
+
+        function realizarDeposito(cantidad) {
+            let saldoActual = obtenerSaldo();
+            saldoActual += cantidad;
+            localStorage.setItem('saldo', saldoActual);
+        }
+
+        // Función para registrar la transacción en el historial
+        function registrarTransaccion(tipo, monto, saldoInicial, saldoFinal) {
+            const transacciones = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+            const fecha = new Date().toLocaleDateString();
+
+            const transaccion = {
+                tipo: tipo,
+                monto: monto,
+                saldoInicial: saldoInicial,
+                saldoFinal: saldoFinal,
+                fecha: fecha
+            };
+
+            transacciones.push(transaccion);
+            localStorage.setItem('transactionHistory', JSON.stringify(transacciones));
         }
     </script>
 </body>

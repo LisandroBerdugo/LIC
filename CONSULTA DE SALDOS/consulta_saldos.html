@@ -6,6 +6,7 @@
     <title>Consulta de Saldo</title>
     <link href="consulta_saldo.css" rel="stylesheet">
     <script src="../scripts/cuenta.js"></script> <!-- Incluir cuenta.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> <!-- Incluir jsPDF -->
 </head>
 <body>
     <div class="inicio-container">
@@ -27,6 +28,8 @@
         <div class="buttons">
             <!-- Botón para regresar a la pantalla de inicio -->
             <a href="../INICIO/inicio.html" class="btn btn-primary">VOLVER</a>
+            <!-- Botón para generar el ticket en PDF -->
+            <button onclick="generarTicketPDF()" class="btn btn-secondary">GENERAR TICKET</button>
         </div>
     </div>
 
@@ -67,6 +70,28 @@
             } else {
                 document.getElementById('user-name').textContent = "Usuario Desconocido";
             }
+        }
+
+        // Función para generar el ticket en PDF con el saldo actual
+        function generarTicketPDF() {
+            const saldo = obtenerSaldo().toFixed(2);
+            const userName = document.getElementById('user-name').textContent;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Establecer el contenido del PDF
+            doc.setFontSize(18);
+            doc.text("Ticket de Consulta de Saldo", 20, 20);
+
+            doc.setFontSize(14);
+            doc.text(`Nombre: ${userName}`, 20, 40);
+            doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 50);
+            doc.text(`Hora: ${new Date().toLocaleTimeString()}`, 20, 60);
+            doc.text(`Saldo Disponible: $${saldo}`, 20, 80);
+
+            // Descargar el PDF
+            doc.save("Ticket_Consulta_Saldo.pdf");
         }
 
         // Inicializar la pantalla con la fecha, hora, nombre del usuario y saldo actual

@@ -1,52 +1,75 @@
 // cuenta.js
 
-// Configuración inicial del saldo y transacciones
-const usuario = 'Ash Ketchum';
-const saldoInicial = 1000.0;
-const maxDeposito = 1000.0;
-const minDepositoRetiro = 5.0;
-const maxRetiro = 350.0;
+// Configuración inicial de saldos y nombres para cada tarjeta
+const usuarios = [
+    { name: 'Ash Ketchum', saldoInicial: 1000.00 },
+    { name: 'Misty Waterflower', saldoInicial: 100.00 },
+    { name: 'Brock Harrison', saldoInicial: 50.00 },
+    { name: 'Gary Oak', saldoInicial: 25.00 },
+    { name: 'Team Rocket', saldoInicial: 0.00 }
+];
 
-// Inicializar saldo y transacciones en localStorage si no existen
-if (!localStorage.getItem('saldo')) {
-    localStorage.setItem('saldo', saldoInicial.toFixed(2)); // Convertir a string con dos decimales
-}
-if (!localStorage.getItem('transacciones')) {
-    localStorage.setItem('transacciones', JSON.stringify([])); // Inicializa como un array vacío
+// Inicializar saldo de la tarjeta seleccionada en localStorage si no existe
+function inicializarSaldo() {
+    const selectedCardIndex = localStorage.getItem('selectedCard');
+
+    if (selectedCardIndex !== null && usuarios[selectedCardIndex]) {
+        const usuario = usuarios[selectedCardIndex];
+        
+        // Si el saldo no existe para esta tarjeta, inicialízalo con el saldoInicial
+        if (!localStorage.getItem(`saldo_${selectedCardIndex}`)) {
+            localStorage.setItem(`saldo_${selectedCardIndex}`, usuario.saldoInicial.toFixed(2));
+        }
+    }
 }
 
-// Función para obtener el saldo actual
+// Función para obtener el saldo actual de la tarjeta seleccionada
 function obtenerSaldo() {
-    return parseFloat(localStorage.getItem('saldo'));
+    const selectedCardIndex = localStorage.getItem('selectedCard');
+    if (selectedCardIndex !== null) {
+        return parseFloat(localStorage.getItem(`saldo_${selectedCardIndex}`)) || 0;
+    }
+    return 0;
 }
 
-// Función para actualizar el saldo en localStorage
+// Función para actualizar el saldo de la tarjeta seleccionada en localStorage
 function actualizarSaldo(nuevoSaldo) {
-    localStorage.setItem('saldo', nuevoSaldo.toFixed(2));
+    const selectedCardIndex = localStorage.getItem('selectedCard');
+    if (selectedCardIndex !== null) {
+        localStorage.setItem(`saldo_${selectedCardIndex}`, nuevoSaldo.toFixed(2));
+    }
 }
 
 // Función para registrar una transacción en el historial
 function registrarTransaccion(tipo, cantidad) {
-    const transacciones = JSON.parse(localStorage.getItem('transacciones'));
-    const nuevaTransaccion = {
-        tipo: tipo,
-        cantidad: cantidad.toFixed(2),
-        fecha: new Date().toLocaleString() // Fecha y hora actual
-    };
-    transacciones.push(nuevaTransaccion);
-    localStorage.setItem('transacciones', JSON.stringify(transacciones));
+    const selectedCardIndex = localStorage.getItem('selectedCard');
+    if (selectedCardIndex !== null) {
+        const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+        const nuevaTransaccion = {
+            usuario: usuarios[selectedCardIndex].name,
+            tipo: tipo,
+            cantidad: cantidad.toFixed(2),
+            fecha: new Date().toLocaleString()
+        };
+        transacciones.push(nuevaTransaccion);
+        localStorage.setItem('transacciones', JSON.stringify(transacciones));
+    }
 }
 
-// Función para realizar un depósito
+// Funciones de depósito, retiro, y pago de servicio (idénticas al código anterior)
 function realizarDeposito(cantidad) {
-    if (cantidad < minDepositoRetiro || cantidad > maxDeposito) {
+    const selectedCardIndex = localStorage.getItem('selectedCard');
+    if (selectedCardIndex === null) return;
+
+    if (cantidad < 5.0 || cantidad > 1000.0) {
         Swal.fire({
             icon: 'error',
             title: 'Cantidad no válida',
-            text: `El depósito debe ser entre $${minDepositoRetiro} y $${maxDeposito}.`,
+            text: `El depósito debe ser entre $5.00 y $1000.00.`,
         });
         return;
     }
+
     const saldoActual = obtenerSaldo();
     const nuevoSaldo = saldoActual + cantidad;
     actualizarSaldo(nuevoSaldo);
@@ -58,16 +81,19 @@ function realizarDeposito(cantidad) {
     });
 }
 
-// Función para realizar un retiro
 function realizarRetiro(cantidad) {
-    if (cantidad < minDepositoRetiro || cantidad > maxRetiro) {
+    const selectedCardIndex = localStorage.getItem('selectedCard');
+    if (selectedCardIndex === null) return;
+
+    if (cantidad < 5.0 || cantidad > 350.0) {
         Swal.fire({
             icon: 'error',
             title: 'Cantidad no válida',
-            text: `El retiro debe ser entre $${minDepositoRetiro} y $${maxRetiro}.`,
+            text: `El retiro debe ser entre $5.00 y $350.00.`,
         });
         return;
     }
+
     const saldoActual = obtenerSaldo();
     if (cantidad > saldoActual) {
         Swal.fire({
@@ -77,6 +103,7 @@ function realizarRetiro(cantidad) {
         });
         return;
     }
+
     const nuevoSaldo = saldoActual - cantidad;
     actualizarSaldo(nuevoSaldo);
     registrarTransaccion('Retiro', cantidad);
@@ -87,16 +114,19 @@ function realizarRetiro(cantidad) {
     });
 }
 
-// Función para realizar un pago de servicio
 function realizarPagoServicio(cantidad) {
-    if (cantidad < minDepositoRetiro || cantidad > maxRetiro) {
+    const selectedCardIndex = localStorage.getItem('selectedCard');
+    if (selectedCardIndex === null) return;
+
+    if (cantidad < 5.0 || cantidad > 350.0) {
         Swal.fire({
             icon: 'error',
             title: 'Cantidad no válida',
-            text: `El pago debe ser entre $${minDepositoRetiro} y $${maxRetiro}.`,
+            text: `El pago debe ser entre $5.00 y $350.00.`,
         });
         return;
     }
+
     const saldoActual = obtenerSaldo();
     if (cantidad > saldoActual) {
         Swal.fire({
@@ -106,6 +136,7 @@ function realizarPagoServicio(cantidad) {
         });
         return;
     }
+
     const nuevoSaldo = saldoActual - cantidad;
     actualizarSaldo(nuevoSaldo);
     registrarTransaccion('Pago de servicio', cantidad);
@@ -116,16 +147,5 @@ function realizarPagoServicio(cantidad) {
     });
 }
 
-// Función para mostrar el historial de transacciones
-function mostrarHistorialTransacciones() {
-    const transacciones = JSON.parse(localStorage.getItem('transacciones'));
-    let historial = '';
-    transacciones.forEach((transaccion) => {
-        historial += `${transaccion.fecha}: ${transaccion.tipo} - $${transaccion.cantidad}\n`;
-    });
-    Swal.fire({
-        icon: 'info',
-        title: 'Historial de transacciones',
-        html: `<pre>${historial}</pre>`, // Usa pre para formato de texto preservado
-    });
-}
+// Inicializar el saldo al cargar la página
+inicializarSaldo();
