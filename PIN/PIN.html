@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ingrese su PIN</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="pin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
 </head>
 <body>
     <div class="pin-container">
@@ -13,9 +14,7 @@
             <div class="logo">
                 <img src="../IMAGENES/pokemon_bank_logo.png" alt="Pokemon logo">
             </div>
-            <div class="time">
-                <span>10:05 AM, 14 Octubre</span>
-            </div>
+            <div class="time" id="time"></div>
         </div>
         
         <div class="pin-section">
@@ -42,12 +41,13 @@
         </div>
         
         <div class="buttons">
-            <!-- Boton para regresar a index.html -->
+            <!-- Botón para regresar a index.html -->
             <button class="btn btn-danger exit-btn" onclick="location.href='../index.html'">REGRESAR</button>
-            <!-- Boton para ir a inicio.html -->
-            <button class="btn btn-primary confirm-btn" onclick="location.href='../INICIO/inicio.html'">CONFIRMAR</button>
+            <!-- Botón para confirmar el PIN -->
+            <button class="btn btn-primary confirm-btn" id="confirm-btn">CONFIRMAR</button>
         </div>
     </div>
 
+    <script src="pin.js"></script>
 </body>
 </html>

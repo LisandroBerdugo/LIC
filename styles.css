@@ -40,33 +40,20 @@ body {
     font-weight: bold;
     color: white;
     text-align: center;
-    transition: box-shadow 0.3s; /* Solo el cambio de resplandor */
+    transition: box-shadow 0.3s;
 }
 
-/* Efecto de resplandor al hacer hover (pasar el mouse por encima) */
 .carousel .card:hover {
-    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.6); /* Resplandor */
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.6);
 }
 
-/* Tarjeta personalizada (Tarjeta 1) con la imagen de fondo */
 .card1 {
     background-image: url('IMAGENES/TarjetaAshKetcum.jpg');
-    background-size: cover;
-    background-position: center;
-    width: 300px;
-    height: 200px;
-    border-radius: 10px;
     transform: rotateY(0deg) translateZ(300px);
 }
 
-/* Tarjeta personalizada (Tarjeta 2) con la imagen de fondo */
 .card2 {
     background-image: url('IMAGENES/TarjetaLisandroBerdugo.jpg');
-    background-size: cover;
-    background-position: center;
-    width: 300px;
-    height: 200px;
-    border-radius: 10px;
     transform: rotateY(72deg) translateZ(300px);
 }
 
@@ -85,10 +72,9 @@ body {
     transform: rotateY(288deg) translateZ(300px);
 }
 
-/* Botones de control */
 .controls {
     position: absolute;
-    bottom: -125px; /* Movemos los botones hacia abajo */
+    bottom: -125px;
     display: flex;
     justify-content: space-around;
     width: 100%;

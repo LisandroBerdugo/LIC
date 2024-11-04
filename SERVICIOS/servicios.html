@@ -25,7 +25,7 @@
 
         <!-- Selección de servicios -->
         <div class="services">
-            <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=LUZ'">LUZ</button>
+            <button class="service-btn" onclick="go_to('LUZ')">LUZ</button>
             <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=AGUA'">AGUA</button>
             <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=INTERNET'">INTERNET</button>
             <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=TELEFONO'">TELÉFONO</button>
@@ -36,5 +36,10 @@
             <a href="../INICIO/inicio.html" class="btn btn-primary">VOLVER</a>
         </div>
     </div>
+    <script>
+    function go_to(servicio){
+        location.href='pago_servicio.html?servicio='+servicio;
+    }
+    </script>
 </body>
 </html>

@@ -1,7 +1,0 @@
-cd C:\Users\LENOVO\Documents\LIC\Proyecto fase 1
-
-git add . 
-
-git commit -m "Mensaje"
-
-git push

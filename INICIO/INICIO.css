@@ -85,7 +85,7 @@ h2 {
 /* Media para pantallas mas pequeñas*/
 @media (max-width: 768px) {
     .services {
-        grid-template-columns: 1fr; /* Los botones de servicio se colocan en una columna */
+        grid-template-columns: 1fr;  /*Los botones de servicio se colocan en una columna */
     }
 
     .service-btn {

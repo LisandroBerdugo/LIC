@@ -5,24 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Saldo</title>
     <link href="consulta_saldo.css" rel="stylesheet">
+    <script src="../scripts/cuenta.js"></script> <!-- Incluir cuenta.js -->
 </head>
 <body>
     <div class="inicio-container">
         <div class="header">
-            <span>Ash Ketchum</span>
+            <span id="user-name">Nombre del Usuario</span>
             <div class="logo">
                 <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
             </div>
-            <div class="time">
-                <span>10:05 AM, 14 Octubre</span>
-            </div>
+            <div class="time" id="time"></div>
         </div>
 
         <h2>CONSULTA DE SALDO</h2>
         <p>Su saldo disponible es:</p>
-        <!-- Muestra el saldo -->
+        <!-- Muestra el saldo dinámicamente -->
         <div class="saldo-display">
-            <p class="saldo">$5,000.00</p>
+            <p id="saldo" class="saldo">$0.00</p>
         </div>
 
         <div class="buttons">
@@ -30,5 +29,53 @@
             <a href="../INICIO/inicio.html" class="btn btn-primary">VOLVER</a>
         </div>
     </div>
+
+    <script>
+        // Datos de usuarios por índice de tarjeta
+        const cardInfo = {
+            0: { name: 'Ash Ketchum' },
+            1: { name: 'Misty Waterflower' },
+            2: { name: 'Brock Harrison' },
+            3: { name: 'Gary Oak' },
+            4: { name: 'Team Rocket' }
+        };
+
+        // Función para actualizar la fecha y hora en el formato deseado
+        function updateDateTime() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.toLocaleString('default', { month: 'long' });
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            
+            // Mostrar la fecha primero y luego la hora
+            document.getElementById('time').textContent = `${day} ${month}, ${hours}:${minutes}`;
+        }
+
+        // Función para mostrar el saldo actual
+        function mostrarSaldo() {
+            const saldo = obtenerSaldo(); // Obtener el saldo usando cuenta.js
+            document.getElementById('saldo').textContent = `$${saldo.toFixed(2)}`;
+        }
+
+        // Función para mostrar el nombre del usuario según la tarjeta seleccionada
+        function mostrarNombreUsuario() {
+            const selectedCardIndex = localStorage.getItem('selectedCard');
+            if (selectedCardIndex !== null && cardInfo[selectedCardIndex]) {
+                const card = cardInfo[selectedCardIndex];
+                document.getElementById('user-name').textContent = card.name;
+            } else {
+                document.getElementById('user-name').textContent = "Usuario Desconocido";
+            }
+        }
+
+        // Inicializar la pantalla con la fecha, hora, nombre del usuario y saldo actual
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDateTime();
+            mostrarSaldo();
+            mostrarNombreUsuario();
+            setInterval(updateDateTime, 60000); // Actualizar la hora cada minuto
+        });
+    </script>
 </body>
 </html>

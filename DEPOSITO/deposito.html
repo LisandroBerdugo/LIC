@@ -9,48 +9,51 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <div class="inicio-container">
-        <div class="header">
-            <span>Ash Ketchums</span>
-            <div class="logo">
-                <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
+    <div class="contenedor">
+        <div class="panel">
+            <div class="header">
+                <span>Ash Ketchums</span>
+                <div class="logo">
+                    <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
+                </div>
+                <div class="time">
+                    <span>10:05 AM, 14 Octubre</span>
+                </div>
             </div>
-            <div class="time">
-                <span>10:05 AM, 14 Octubre</span>
+
+            <h2>DEPÓSITO</h2>
+            <p>Por favor, ingrese el monto a depositar.</p>
+
+            <!-- Muestra el monto -->
+            <div class="single-line-display">
+                <input type="text" class="amount-input" placeholder="0.00" disabled>
             </div>
-        </div>
 
-        <h2>DEPÓSITO</h2>
-        <p>Por favor, ingrese el monto a depositar.</p>
+            <!-- Teclado -->
+            <div class="keypad">
+                <button class="key">1</button>
+                <button class="key">2</button>
+                <button class="key">3</button>
+                <button class="key">4</button>
+                <button class="key">5</button>
+                <button class="key">6</button>
+                <button class="key">7</button>
+                <button class="key">8</button>
+                <button class="key">9</button>
+                <button class="key">←</button>
+                <button class="key">0</button>
+                <button class="key">C</button>
+            </div>
 
-        <!-- Muestra el monto -->
-        <div class="single-line-display">
-            <input type="text" class="amount-input" placeholder="0.00" disabled>
-        </div>
-
-        <!-- Teclado -->
-        <div class="keypad">
-            <button class="key">1</button>
-            <button class="key">2</button>
-            <button class="key">3</button>
-            <button class="key">4</button>
-            <button class="key">5</button>
-            <button class="key">6</button>
-            <button class="key">7</button>
-            <button class="key">8</button>
-            <button class="key">9</button>
-            <button class="key">←</button>
-            <button class="key">0</button>
-            <button class="key">C</button>
-        </div>
-
-        <div class="buttons">
-            <!-- Botón que muestra SweetAlert -->
-            <button class="btn btn-primary" type="button" onclick="mostrarAlerta()">CONFIRMAR</button>
-            <!-- Botón que muestra la alerta de salida -->
-            <button class="btn btn-danger" type="button" onclick="confirmarSalida()">CANCELAR</button>
+            <div class="buttons">
+                <!-- Botón que muestra SweetAlert -->
+                <button class="btn btn-primary" type="button" onclick="mostrarAlerta()">CONFIRMAR</button>
+                <!-- Botón que muestra la alerta de salida -->
+                <button class="btn btn-danger" type="button" onclick="confirmarSalida()">CANCELAR</button>
+            </div>
         </div>
     </div>
+    
 
     <script>
         // Función que muestra la alerta de transacción exitosa
