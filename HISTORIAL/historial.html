@@ -92,13 +92,15 @@
 
         // Función para cargar el historial de transacciones desde localStorage
         function cargarHistorialTransacciones() {
+            
             const transactionBody = document.getElementById('transaction-body');
-            const transactions = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+            const selectedCardIndex = localStorage.getItem('selectedCard');
+            const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
 
             // Limpiar el contenido previo de la tabla
             transactionBody.innerHTML = "";
 
-            transactions.forEach(transaccion => {
+            transacciones.forEach(transaccion => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>$${transaccion.saldoInicial.toFixed(2)}</td>
@@ -118,12 +120,13 @@
             canvas.width = 220; // Fija el ancho del canvas
             canvas.height = 220; // Fija el alto del canvas
 
-            const transactions = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+            const selectedCardIndex = localStorage.getItem('selectedCard');
+            const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
 
             let ingresos = 0;
             let egresos = 0;
 
-            transactions.forEach(transaccion => {
+            transacciones.forEach(transaccion => {
                 if (transaccion.tipo === 'deposito') {
                     ingresos += transaccion.monto;
                 } else if (transaccion.tipo === 'retiro' || transaccion.tipo === 'servicio') {
@@ -167,13 +170,13 @@
             canvas.width = 220; // Fija el ancho del canvas
             canvas.height = 220; // Fija el alto del canvas
 
-            const transactions = JSON.parse(localStorage.getItem('transactionHistory')) || [];
-
+const selectedCardIndex = localStorage.getItem('selectedCard');
+            const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
             let depositos = 0;
             let retiros = 0;
             let servicios = 0;
 
-            transactions.forEach(transaccion => {
+            transacciones.forEach(transaccion => {
                 if (transaccion.tipo === 'deposito') {
                     depositos += transaccion.monto;
                 } else if (transaccion.tipo === 'retiro') {

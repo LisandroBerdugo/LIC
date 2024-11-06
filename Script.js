@@ -24,6 +24,24 @@ document.getElementById('prev').addEventListener('click', function() {
     rotateCarousel(currentCard);
 });
 
+// Funcionalidad para el botón "Anterior"
+document.getElementById('borrar').addEventListener('click', function() {
+     Swal.fire({
+                title: 'Está a punto de restablecer los datos',
+                text: '¿Desea continuar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.clear(); // Limpia el local storage
+                }
+            });
+});
+
 // Función para rotar el carrusel al índice de tarjeta dado
 function rotateCarousel(cardIndex) {
     const angle = (cardIndex - 1) * -72; // Rotación 72 grados por tarjeta

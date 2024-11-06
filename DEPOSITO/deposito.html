@@ -51,6 +51,7 @@
     </div>
 
     <script>
+        const selectedCardIndex = localStorage.getItem('selectedCard');
         // Función para actualizar la fecha y hora en el formato deseado
         function updateDateTime() {
             const now = new Date();
@@ -63,7 +64,6 @@
 
         // Función para mostrar el nombre del usuario
         function mostrarNombreUsuario() {
-            const selectedCardIndex = localStorage.getItem('selectedCard');
             const cardInfo = {
                 0: 'Ash Ketchum',
                 1: 'Misty Waterflower',
@@ -187,20 +187,21 @@
 
         // Funciones auxiliares para manejo de saldo
         function obtenerSaldo() {
-            return parseFloat(localStorage.getItem('saldo')) || 0;
+            return parseFloat(localStorage.getItem(`saldo_${selectedCardIndex}`)) || 0;
         }
 
         function realizarDeposito(cantidad) {
             let saldoActual = obtenerSaldo();
             saldoActual += cantidad;
-            localStorage.setItem('saldo', saldoActual);
+            localStorage.setItem(`saldo_${selectedCardIndex}`, saldoActual);
         }
 
         // Función para registrar la transacción en el historial
         function registrarTransaccion(tipo, monto, saldoInicial, saldoFinal) {
-            const transacciones = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+            const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
+            
             const fecha = new Date().toLocaleDateString();
-
+            
             const transaccion = {
                 tipo: tipo,
                 monto: monto,
@@ -210,7 +211,7 @@
             };
 
             transacciones.push(transaccion);
-            localStorage.setItem('transactionHistory', JSON.stringify(transacciones));
+            localStorage.setItem(`transacciones_${selectedCardIndex}`, JSON.stringify(transacciones));
         }
     </script>
 </body>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Saldo Detallada</title>
+    <link href="consultadeSaldoP.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
+</head>
+<body>
+    <div class="inicio-container">
+        <div class="header">
+            <span id="user-name">Nombre del Usuario</span>
+            <div class="logo">
+                <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
+            </div>
+            <div class="time" id="time"></div>
+        </div>
+
+        <h2>CONSULTA DE SALDO DETALLADA</h2>
+
+        <!-- Mostrar saldo inicial y saldo final -->
+        <div class="saldo-info">
+            <!--div class="saldo-item">
+                <h3>Saldo Inicial</h3>
+                <p id="saldo-inicial" class="saldo">$0.00</p>
+            </div-->
+            <div class="saldo-item">
+                <h3>Saldo Final</h3>
+                <p id="saldo-final" class="saldo">$0.00</p>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <!-- Botón para regresar a la pantalla de inicio -->
+            <a href="../INICIO/inicio.html" class="btn btn-primary">VOLVER</a>
+        </div>
+    </div>
+
+    <script src="../scripts/cuenta.js"></script>
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.toLocaleString('default', { month: 'long' });
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('time').textContent = `${day} ${month}, ${hours}:${minutes}`;
+        }
+
+        function mostrarNombreUsuario() {
+            const selectedCardIndex = localStorage.getItem('selectedCard');
+            const cardInfo = {
+                0: { name: 'Ash Ketchum' },
+                1: { name: 'Misty Waterflower' },
+                2: { name: 'Brock Harrison' },
+                3: { name: 'Gary Oak' },
+                4: { name: 'Team Rocket' }
+            };
+            if (selectedCardIndex !== null && cardInfo[selectedCardIndex]) {
+                document.getElementById('user-name').textContent = cardInfo[selectedCardIndex].name;
+            } else {
+                document.getElementById('user-name').textContent = "Usuario Desconocido";
+            }
+        }
+
+        // Función para mostrar el saldo inicial desde el historial y el saldo final actual
+        function mostrarSaldos() {
+            const selectedCardIndex = localStorage.getItem('selectedCard');
+            const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
+            // Si hay transacciones, obtiene el saldo inicial y saldo final de la última transacción
+            if (transacciones.length > 0) {
+                const ultimaTransaccion = transacciones[transacciones.length - 1];
+                //document.getElementById('saldo-inicial').textContent = `$${ultimaTransaccion.saldoInicial}`;
+                document.getElementById('saldo-final').textContent = `$${ultimaTransaccion.saldoFinal}`;
+            } else {
+                // Si no hay transacciones, muestra el saldo inicial del usuario
+                const saldoInicial = obtenerSaldo(); // Función de cuenta.js para obtener el saldo
+                //document.getElementById('saldo-inicial').textContent = `$${saldoInicial.toFixed(2)}`;
+                document.getElementById('saldo-final').textContent = `$${saldoInicial.toFixed(2)}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDateTime();
+            mostrarNombreUsuario();
+            mostrarSaldos();
+            setInterval(updateDateTime, 60000); // Actualizar la hora cada minuto
+        });
+    </script>
+</body>
+</html>

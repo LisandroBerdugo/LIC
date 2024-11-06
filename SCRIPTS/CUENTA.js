@@ -1,18 +1,33 @@
 // cuenta.js
 
 // Configuración inicial de saldos y nombres para cada tarjeta
+
+const selectedCardIndex = localStorage.getItem('selectedCard');
 const usuarios = [
-    { name: 'Ash Ketchum', saldoInicial: 1000.00 },
-    { name: 'Misty Waterflower', saldoInicial: 100.00 },
-    { name: 'Brock Harrison', saldoInicial: 50.00 },
-    { name: 'Gary Oak', saldoInicial: 25.00 },
-    { name: 'Team Rocket', saldoInicial: 0.00 }
+    { 
+        name: 'Ash Ketchum', 
+        saldoInicial: 1000.00
+    },
+    { 
+        name: 'Misty Waterflower', 
+        saldoInicial: 100.00
+    },
+    { 
+        name: 'Brock Harrison', 
+        saldoInicial: 50.00
+    },
+    { 
+        name: 'Gary Oak', 
+        saldoInicial: 25.00
+    },
+    { 
+        name: 'Team Rocket', 
+        saldoInicial: 0.00
+    }
 ];
 
 // Inicializar saldo de la tarjeta seleccionada en localStorage si no existe
 function inicializarSaldo() {
-    const selectedCardIndex = localStorage.getItem('selectedCard');
-
     if (selectedCardIndex !== null && usuarios[selectedCardIndex]) {
         const usuario = usuarios[selectedCardIndex];
         
@@ -25,7 +40,7 @@ function inicializarSaldo() {
 
 // Función para obtener el saldo actual de la tarjeta seleccionada
 function obtenerSaldo() {
-    const selectedCardIndex = localStorage.getItem('selectedCard');
+    
     if (selectedCardIndex !== null) {
         return parseFloat(localStorage.getItem(`saldo_${selectedCardIndex}`)) || 0;
     }
@@ -34,38 +49,52 @@ function obtenerSaldo() {
 
 // Función para actualizar el saldo de la tarjeta seleccionada en localStorage
 function actualizarSaldo(nuevoSaldo) {
-    const selectedCardIndex = localStorage.getItem('selectedCard');
+    
     if (selectedCardIndex !== null) {
         localStorage.setItem(`saldo_${selectedCardIndex}`, nuevoSaldo.toFixed(2));
     }
 }
 
-// Función para registrar una transacción en el historial
+// Función para registrar una transacción en el historial con saldo inicial y final
 function registrarTransaccion(tipo, cantidad) {
-    const selectedCardIndex = localStorage.getItem('selectedCard');
     if (selectedCardIndex !== null) {
-        const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+        const saldoInicial = obtenerSaldo();
+        let saldoFinal;
+
+        if (tipo === 'Depósito') {
+            saldoFinal = saldoInicial + cantidad;
+        } else if (tipo === 'Retiro' || tipo === 'Pago de servicio') {
+            saldoFinal = saldoInicial - cantidad;
+        }
+
+        // Actualizar el saldo final en localStorage
+        actualizarSaldo(saldoFinal);
+
+        // Guardar la transacción en el historial específico de cada usuario
+        const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
         const nuevaTransaccion = {
             usuario: usuarios[selectedCardIndex].name,
             tipo: tipo,
             cantidad: cantidad.toFixed(2),
+            saldoInicial: saldoInicial.toFixed(2),
+            saldoFinal: saldoFinal.toFixed(2),
             fecha: new Date().toLocaleString()
         };
         transacciones.push(nuevaTransaccion);
-        localStorage.setItem('transacciones', JSON.stringify(transacciones));
+        localStorage.setItem(`transacciones_${selectedCardIndex}`, JSON.stringify(transacciones));
     }
 }
 
-// Funciones de depósito, retiro, y pago de servicio (idénticas al código anterior)
+// Función de depósito
 function realizarDeposito(cantidad) {
-    const selectedCardIndex = localStorage.getItem('selectedCard');
+    
     if (selectedCardIndex === null) return;
 
     if (cantidad < 5.0 || cantidad > 1000.0) {
         Swal.fire({
             icon: 'error',
             title: 'Cantidad no válida',
-            text: `El depósito debe ser entre $5.00 y $1000.00.`,
+            text: 'El depósito debe ser entre $5.00 y $1000.00.',
         });
         return;
     }
@@ -81,15 +110,16 @@ function realizarDeposito(cantidad) {
     });
 }
 
+// Función de retiro
 function realizarRetiro(cantidad) {
-    const selectedCardIndex = localStorage.getItem('selectedCard');
+    
     if (selectedCardIndex === null) return;
 
     if (cantidad < 5.0 || cantidad > 350.0) {
         Swal.fire({
             icon: 'error',
             title: 'Cantidad no válida',
-            text: `El retiro debe ser entre $5.00 y $350.00.`,
+            text: 'El retiro debe ser entre $5.00 y $350.00.',
         });
         return;
     }
@@ -99,7 +129,7 @@ function realizarRetiro(cantidad) {
         Swal.fire({
             icon: 'error',
             title: 'Saldo insuficiente',
-            text: `No tienes suficiente saldo para realizar este retiro.`,
+            text: 'No tienes suficiente saldo para realizar este retiro.',
         });
         return;
     }
@@ -111,39 +141,6 @@ function realizarRetiro(cantidad) {
         icon: 'success',
         title: 'Retiro exitoso',
         text: `Se han retirado $${cantidad.toFixed(2)}.`,
-    });
-}
-
-function realizarPagoServicio(cantidad) {
-    const selectedCardIndex = localStorage.getItem('selectedCard');
-    if (selectedCardIndex === null) return;
-
-    if (cantidad < 5.0 || cantidad > 350.0) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Cantidad no válida',
-            text: `El pago debe ser entre $5.00 y $350.00.`,
-        });
-        return;
-    }
-
-    const saldoActual = obtenerSaldo();
-    if (cantidad > saldoActual) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Saldo insuficiente',
-            text: `No tienes suficiente saldo para realizar este pago.`,
-        });
-        return;
-    }
-
-    const nuevoSaldo = saldoActual - cantidad;
-    actualizarSaldo(nuevoSaldo);
-    registrarTransaccion('Pago de servicio', cantidad);
-    Swal.fire({
-        icon: 'success',
-        title: 'Pago exitoso',
-        text: `Se ha realizado un pago de $${cantidad.toFixed(2)}.`,
     });
 }
 

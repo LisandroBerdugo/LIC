@@ -34,14 +34,11 @@
     </div>
 
     <script>
-        // Datos de usuarios por índice de tarjeta
-        const cardInfo = {
-            0: { name: 'Ash Ketchum' },
-            1: { name: 'Misty Waterflower' },
-            2: { name: 'Brock Harrison' },
-            3: { name: 'Gary Oak' },
-            4: { name: 'Team Rocket' }
-        };
+        // Función para mostrar el saldo actual llamando a obtenerSaldo desde cuenta.js
+        function mostrarSaldo() {
+            const saldo = obtenerSaldo(); // Llamada a obtenerSaldo() para obtener el saldo actualizado
+            document.getElementById('saldo').textContent = `$${saldo.toFixed(2)}`;
+        }
 
         // Función para actualizar la fecha y hora en el formato deseado
         function updateDateTime() {
@@ -55,15 +52,16 @@
             document.getElementById('time').textContent = `${day} ${month}, ${hours}:${minutes}`;
         }
 
-        // Función para mostrar el saldo actual
-        function mostrarSaldo() {
-            const saldo = obtenerSaldo(); // Obtener el saldo usando cuenta.js
-            document.getElementById('saldo').textContent = `$${saldo.toFixed(2)}`;
-        }
-
         // Función para mostrar el nombre del usuario según la tarjeta seleccionada
         function mostrarNombreUsuario() {
             const selectedCardIndex = localStorage.getItem('selectedCard');
+            const cardInfo = {
+                0: { name: 'Ash Ketchum' },
+                1: { name: 'Misty Waterflower' },
+                2: { name: 'Brock Harrison' },
+                3: { name: 'Gary Oak' },
+                4: { name: 'Team Rocket' }
+            };
             if (selectedCardIndex !== null && cardInfo[selectedCardIndex]) {
                 const card = cardInfo[selectedCardIndex];
                 document.getElementById('user-name').textContent = card.name;
@@ -97,9 +95,10 @@
         // Inicializar la pantalla con la fecha, hora, nombre del usuario y saldo actual
         document.addEventListener('DOMContentLoaded', () => {
             updateDateTime();
-            mostrarSaldo();
+            mostrarSaldo(); // Mostrar el saldo actual al cargar la página
             mostrarNombreUsuario();
             setInterval(updateDateTime, 60000); // Actualizar la hora cada minuto
+            setInterval(mostrarSaldo, 5000); // Actualizar el saldo cada 5 segundos (opcional)
         });
     </script>
 </body>
