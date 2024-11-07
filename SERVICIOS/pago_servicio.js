@@ -14,13 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombreServicio = urlParams.get('servicio') || 'SERVICIO';
 
     const serviciosNPE = {
-        LUZ: {      '123456': 50.00, 
+        LUZ:      { '123456': 50.00, 
                     '123457': 75.00, 
                     '123458': 1000.00 },
         
-        AGUA: {     '234561': 30.00, 
+        AGUA:     { '234561': 30.00, 
                     '234562': 45.00, 
                     '234563': 60.00 },
+        
         INTERNET: { '345671': 80.00, 
                     '345672': 100.00, 
                     '345673': 120.00 },

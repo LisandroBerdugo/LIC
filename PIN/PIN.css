@@ -4,9 +4,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Mínimo 100vh para asegurar que no haya scroll */
     background-color: #2f2fd4;
     font-family: Arial, sans-serif;
+    overflow: hidden; /* Evita el desplazamiento de la página */
 }
 
 .pin-container {
@@ -18,7 +19,10 @@ body {
     text-align: center;
     color: white;
     position: relative;
+    top: 0; /* Asegura que no haya desplazamiento vertical */
+    transform: none; /* Elimina la transformación de centrado */
 }
+
 
 .header {
     display: flex;
@@ -87,9 +91,14 @@ body {
     color: #d0021b;
 }
 
+.clear-btn {
+    color: white;
+}
+
 .buttons {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    gap: 15px;
 }
 
 .exit-btn {

@@ -1,11 +1,15 @@
 /* Estilo general */
+/* Fondo personalizado para el index */
 body {
-    margin: 0;
+    background-image: url('./IMAGENES/fondopokemon.jpg'); /* Asegúrate de que la ruta sea correcta */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: black;
+    margin: 0;
 }
 
 .carousel-container {
@@ -95,4 +99,32 @@ body {
     display: flex;
     justify-content: space-around;
     width: 100%;
+}
+
+/* Estilo personalizado para SweetAlert sin barra de desplazamiento */
+.no-scroll-swal {
+    overflow: hidden; /* Eliminar la barra de desplazamiento */
+    max-height: 100vh; /* Evitar que el contenido sobrepase la altura */
+    box-sizing: border-box; /* Para asegurarse de que el padding no cause scroll */
+}
+
+.no-scroll-swal .swal2-html-container {
+    overflow: hidden !important; /* Asegurarse de que el contenedor interno tampoco muestre scroll */
+    padding: 10px 0 !important; /* Ajustar el padding para evitar exceso de espacio */
+}
+
+/* Animación de la pokebola temblando con inclinación */
+.pokebola-animada {
+    width: 100px; /* Tamaño de la pokebola */
+    height: 100px; /* Tamaño de la pokebola */
+    margin-top: 20px; /* Espacio entre el texto y la pokebola */
+    animation: temblorPokebola 1s ease-in-out infinite; /* Duración ajustada a 1 segundo para que sea más lenta */
+}
+
+@keyframes temblorPokebola {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); } /* Inclinación hacia la derecha */
+    50% { transform: rotate(-15deg); } /* Inclinación hacia la izquierda */
+    75% { transform: rotate(15deg); } /* Inclinación hacia la derecha */
+    100% { transform: rotate(0deg); } /* Volver a la posición original */
 }

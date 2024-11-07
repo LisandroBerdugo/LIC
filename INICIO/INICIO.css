@@ -7,6 +7,14 @@ body {
     height: 100vh;
     background-color: #2f2fd4;
     font-family: Arial, sans-serif;
+    overflow: hidden; /* Evita el desplazamiento de la página */
+}
+
+.contenedor {
+    height: 100vh; /* Mantiene la altura completa de la pantalla */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .inicio-container {
@@ -17,7 +25,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 500px; 
+    max-width: 500px;
 }
 
 .header {
@@ -82,10 +90,10 @@ h2 {
     background-color: #c0392b;
 }
 
-/* Media para pantallas mas pequeñas*/
+/* Media para pantallas más pequeñas */
 @media (max-width: 768px) {
     .services {
-        grid-template-columns: 1fr;  /*Los botones de servicio se colocan en una columna */
+        grid-template-columns: 1fr; /* Los botones de servicio se colocan en una columna */
     }
 
     .service-btn {
