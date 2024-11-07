@@ -7,6 +7,7 @@
     <link href="historial.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.4.0/dist/jspdf.umd.min.js"></script> <!-- jsPDF -->
 </head>
 <body>
     <div class="inicio-container">
@@ -54,6 +55,7 @@
         <div class="buttons">
             <!-- Botón para regresar a la pantalla de inicio -->
             <a href="../INICIO/inicio.html" class="btn btn-primary">VOLVER</a>
+            <button class="btn btn-success" onclick="exportarHistorial()">EXPORTAR TICKET</button>
         </div>
     </div>
 
@@ -90,37 +92,96 @@
             setInterval(updateDateTime, 60000); // Actualizar la hora cada minuto
         });
 
-// Función para cargar el historial de transacciones desde localStorage
-function cargarHistorialTransacciones() {
-    const transactionBody = document.getElementById('transaction-body');
+        // Función para cargar el historial de transacciones desde localStorage
+        function cargarHistorialTransacciones() {
+            const transactionBody = document.getElementById('transaction-body');
+            const selectedCardIndex = localStorage.getItem('selectedCard');
+            const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`) || '[]') || [];
+
+            // Limpiar el contenido previo de la tabla
+            transactionBody.innerHTML = "";
+
+            transacciones.forEach(transaccion => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>$${Number(transaccion.saldoInicial).toFixed(2)}</td>
+                    <td>${transaccion.tipo === 'deposito' ? `$${Number(transaccion.monto).toFixed(2)}` : ''}</td>
+                    <td>${transaccion.tipo === 'retiro' ? `$${Number(transaccion.monto).toFixed(2)}` : ''}</td>
+                    <td>${transaccion.tipo === 'servicio' ? `$${Number(transaccion.monto).toFixed(2)} (${transaccion.nombreServicio || ''})` : ''}</td>
+                    <td>$${Number(transaccion.saldoFinal).toFixed(2)}</td>
+                    <td>${transaccion.fecha}</td>
+                `;
+                transactionBody.appendChild(row);
+            });
+        }
+
+    function exportarHistorial() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
     const selectedCardIndex = localStorage.getItem('selectedCard');
-    const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`) || '[]') || [];
+    const userName = document.getElementById('user-name').textContent;
+    const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)) || [];
+    
+    // Encabezado del PDF
+    doc.setFontSize(18);
+    doc.text("Historial de Transacciones", 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Usuario: ${userName}`, 20, 30);
+    doc.text(`Fecha de Exportación: ${new Date().toLocaleDateString()}`, 20, 40);
+    
+    // Columnas de la tabla
+    const startY = 50;
+    let currentY = startY;
+    doc.setFontSize(10);
+    doc.text("Saldo Inicial", 20, currentY);
+    doc.text("Depósitos", 50, currentY);
+    doc.text("Retiros", 80, currentY);
+    doc.text("Pago de Servicios", 110, currentY);
+    doc.text("Saldo Final", 150, currentY);
+    doc.text("Fecha", 180, currentY);
+    currentY += 10;
+    
+    // Relleno de la tabla con las transacciones
+    transacciones.forEach((transaccion) => {
+        const saldoInicial = `$${Number(transaccion.saldoInicial).toFixed(2)}`;
+        const depositos = transaccion.tipo === 'deposito' ? `$${Number(transaccion.monto).toFixed(2)}` : '';
+        const retiros = transaccion.tipo === 'retiro' ? `$${Number(transaccion.monto).toFixed(2)}` : '';
+        const servicio = transaccion.tipo === 'servicio' ? `$${Number(transaccion.monto).toFixed(2)} - ${transaccion.nombreServicio || ''}` : '';
+        const saldoFinal = `$${Number(transaccion.saldoFinal).toFixed(2)}`;
+        const fecha = transaccion.fecha;
 
-    // Limpiar el contenido previo de la tabla
-    transactionBody.innerHTML = "";
+        // Agregar fila al PDF
+        doc.text(saldoInicial, 20, currentY);
+        doc.text(depositos, 50, currentY);
+        doc.text(retiros, 80, currentY);
+        doc.text(servicio, 110, currentY);
+        doc.text(saldoFinal, 150, currentY);
+        doc.text(fecha, 180, currentY);
+        currentY += 10;
 
-    transacciones.forEach(transaccion => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>$${Number(transaccion.saldoInicial).toFixed(2)}</td>
-            <td>${transaccion.tipo === 'deposito' ? `$${Number(transaccion.monto).toFixed(2)}` : ''}</td>
-            <td>${transaccion.tipo === 'retiro' ? `$${Number(transaccion.monto).toFixed(2)}` : ''}</td>
-            <td>${transaccion.tipo === 'servicio' ? `$${Number(transaccion.monto).toFixed(2)} (${transaccion.nombreServicio || ''})` : ''}</td>
-            <td>$${Number(transaccion.saldoFinal).toFixed(2)}</td>
-            <td>${transaccion.fecha}</td>
-        `;
-        transactionBody.appendChild(row);
+        // Salto de página si la altura es mayor al límite
+        if (currentY > 280) {
+            doc.addPage();
+            currentY = startY;
+        }
     });
+
+    // Pie de página con el mensaje de la agencia
+    currentY += 20;
+    doc.setFontSize(12);
+    doc.text("Agencia San Salvador - POKEBANK tu mejor opción", 20, currentY);
+
+    // Descargar el PDF
+    doc.save(`Historial_Transacciones_${userName}.pdf`);
 }
 
 
-
+        // Funciones de las gráficas
         // Función para generar la gráfica de ingresos y egresos
         function generarGraficaIngresosEgresos() {
             const canvas = document.getElementById('balanceChart');
-            canvas.width = 220; // Fija el ancho del canvas
-            canvas.height = 220; // Fija el alto del canvas
-
+            const ctx = canvas.getContext('2d');
             const selectedCardIndex = localStorage.getItem('selectedCard');
             const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
 
@@ -135,32 +196,15 @@ function cargarHistorialTransacciones() {
                 }
             });
 
-            const ctx = canvas.getContext('2d');
             new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: ['Ingresos', 'Egresos'],
-                    datasets: [{
-                        data: [ingresos, egresos],
-                        backgroundColor: ['#4CAF50', '#F44336']
-                    }]
+                    datasets: [{ data: [ingresos, egresos], backgroundColor: ['#4CAF50', '#F44336'] }]
                 },
                 options: {
                     responsive: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: 'white'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return `${tooltipItem.label}: $${tooltipItem.raw.toFixed(2)}`;
-                                }
-                            }
-                        }
-                    }
+                    plugins: { legend: { labels: { color: 'white' } } }
                 }
             });
         }
@@ -168,11 +212,10 @@ function cargarHistorialTransacciones() {
         // Función para generar la gráfica de detalle de movimientos
         function generarGraficaDetalleMovimientos() {
             const canvas = document.getElementById('transactionBreakdownChart');
-            canvas.width = 220; // Fija el ancho del canvas
-            canvas.height = 220; // Fija el alto del canvas
-
-const selectedCardIndex = localStorage.getItem('selectedCard');
+            const ctx = canvas.getContext('2d');
+            const selectedCardIndex = localStorage.getItem('selectedCard');
             const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
+
             let depositos = 0;
             let retiros = 0;
             let servicios = 0;
@@ -187,32 +230,15 @@ const selectedCardIndex = localStorage.getItem('selectedCard');
                 }
             });
 
-            const ctx = canvas.getContext('2d');
             new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: ['Depósitos', 'Retiros', 'Pagos de Servicios'],
-                    datasets: [{
-                        data: [depositos, retiros, servicios],
-                        backgroundColor: ['#4CAF50', '#FF9800', '#F44336']
-                    }]
+                    datasets: [{ data: [depositos, retiros, servicios], backgroundColor: ['#4CAF50', '#FF9800', '#F44336'] }]
                 },
                 options: {
                     responsive: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: 'white'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return `${tooltipItem.label}: $${tooltipItem.raw.toFixed(2)}`;
-                                }
-                            }
-                        }
-                    }
+                    plugins: { legend: { labels: { color: 'white' } } }
                 }
             });
         }

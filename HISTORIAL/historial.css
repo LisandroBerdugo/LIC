@@ -75,6 +75,8 @@ tbody tr:nth-child(odd) {
 .buttons {
     display: flex;
     justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .btn {
@@ -94,6 +96,19 @@ tbody tr:nth-child(odd) {
 
 .btn-primary:hover {
     background-color: #1f6c8f;
+}
+
+.btn-success {
+    background-color: #4CAF50;
+}
+
+.btn-success:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-success:hover:enabled {
+    background-color: #388E3C;
 }
 
 /* Estilos de las gráficas */
