@@ -5,19 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pago de Servicios</title>
     <link href="pago_servicios.css" rel="stylesheet">
-    <!-- Incluir SweetAlert desde un CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="inicio-container">
         <div class="header">
-            <span>Ash Ketchum</span>
+            <span id="user-name">Nombre del Usuario</span>
             <div class="logo">
                 <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
             </div>
-            <div class="time">
-                <span>10:05 AM, 14 Octubre</span>
-            </div>
+            <div class="time" id="time"></div>
         </div>
 
         <h2>PAGO DE SERVICIOS</h2>
@@ -25,21 +22,35 @@
 
         <!-- Selección de servicios -->
         <div class="services">
-            <button class="service-btn" onclick="go_to('LUZ')">LUZ</button>
-            <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=AGUA'">AGUA</button>
-            <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=INTERNET'">INTERNET</button>
-            <button class="service-btn" onclick="location.href='pago_servicio.html?servicio=TELEFONO'">TELÉFONO</button>
+            <button class="service-btn" onclick="irAPagoServicio('LUZ')">LUZ</button>
+            <button class="service-btn" onclick="irAPagoServicio('AGUA')">AGUA</button>
+            <button class="service-btn" onclick="irAPagoServicio('INTERNET')">INTERNET</button>
+            <button class="service-btn" onclick="irAPagoServicio('TELEFONO')">TELÉFONO</button>
         </div>
 
         <div class="buttons">
-            <!-- Botón para regresar a la pantalla de inicio -->
             <a href="../INICIO/inicio.html" class="btn btn-primary">VOLVER</a>
         </div>
     </div>
+
     <script>
-    function go_to(servicio){
-        location.href='pago_servicio.html?servicio='+servicio;
-    }
+        function irAPagoServicio(servicio) {
+            // Redirige a pago_servicio.html pasando el servicio como parámetro en la URL
+            window.location.href = `pago_servicio.html?servicio=${encodeURIComponent(servicio)}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = document.getElementById('user-name');
+            userName.textContent = localStorage.getItem('selectedCardUserName') || "Usuario Desconocido";
+
+            const timeElement = document.getElementById('time');
+            const updateDateTime = () => {
+                const now = new Date();
+                timeElement.textContent = `${now.getDate()} ${now.toLocaleString('default', { month: 'long' })}, ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            };
+            updateDateTime();
+            setInterval(updateDateTime, 60000);
+        });
     </script>
 </body>
 </html>

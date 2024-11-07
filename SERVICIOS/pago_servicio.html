@@ -5,68 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagar Servicio</title>
     <link href="pago_servicio.css" rel="stylesheet">
-    <!-- Incluir SweetAlert desde un CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
 </head>
 <body>
-    <div class="inicio-container">
-        <div class="header">
-            <span>Ash Ketchum</span>
-            <div class="logo">
-                <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
+    <div class="contenedor">
+        <div class="panel">
+            <div class="header">
+                <span id="user-name">Nombre del Usuario</span>
+                <div class="logo">
+                    <img src="../IMAGENES/pokemon_bank_logo.png" alt="Logo Banco">
+                </div>
+                <div class="time" id="time"></div>
             </div>
-            <div class="time">
-                <span>10:05 AM, 14 Octubre</span>
+
+            <h2>PAGO DE SERVICIO</h2>
+            <p>Ingrese el NPE del servicio a pagar:</p>
+
+            <!-- Campo de entrada estilizado para el NPE -->
+            <div class="npe-display">
+                <input type="text" id="npeInput" class="amount-input" placeholder="000000" maxlength="6" oninput="limitarNPE()" onkeypress="return soloNumeros(event)">
             </div>
-        </div>
 
-        <h2>PAGAR SERVICIO</h2>
-        <p>Usted está pagando el servicio de <span id="servicio"></span></p>
-        <p>Monto a pagar: <span id="monto">$350.00</span></p>
+            <!-- Teclado para ingresar el NPE -->
+            <div class="keypad">
+                <button class="key" onclick="ingresarNPE('1')">1</button>
+                <button class="key" onclick="ingresarNPE('2')">2</button>
+                <button class="key" onclick="ingresarNPE('3')">3</button>
+                <button class="key" onclick="ingresarNPE('4')">4</button>
+                <button class="key" onclick="ingresarNPE('5')">5</button>
+                <button class="key" onclick="ingresarNPE('6')">6</button>
+                <button class="key" onclick="ingresarNPE('7')">7</button>
+                <button class="key" onclick="ingresarNPE('8')">8</button>
+                <button class="key" onclick="ingresarNPE('9')">9</button>
+                <button class="key" onclick="borrarUltimo()">←</button>
+                <button class="key" onclick="ingresarNPE('0')">0</button>
+                <button class="key" onclick="borrarTodo()">C</button>
+            </div>
 
-        <div class="buttons">
-            <button class="btn btn-primary" onclick="pagarServicio()">PAGAR</button>
-            <button class="btn btn-danger" onclick="cancelarPago()">CANCELAR</button>
+            <!-- Monto a pagar -->
+            <div class="amount-display">
+                <p>Monto a Pagar:</p>
+                <p id="amountToPay" class="amount">$0.00</p>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-primary" type="button" onclick="verificarNPE()">VERIFICAR NPE</button>
+                <button class="btn btn-success btn-disabled" type="button" onclick="confirmarPago()" disabled id="confirmButton">CONFIRMAR PAGO</button>
+                <button class="btn btn-danger" type="button" onclick="confirmarSalida()">CANCELAR</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Obtener el nombre del servicio seleccionado de la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const servicio = urlParams.get('servicio');
-        document.getElementById('servicio').textContent = servicio;
-
-        // Función para pagar el servicio (mostrar alerta)
-        function pagarServicio() {
-            Swal.fire({
-                title: 'Pago Exitoso',
-                text: `El pago del servicio de ${servicio} se ha realizado con éxito.`,
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Redirige a la página de inicio
-                    window.location.href = '../INICIO/inicio.html';
-                }
-            });
-        }
-
-        // Función para cancelar el pago (mostrar alerta)
-        function cancelarPago() {
-            Swal.fire({
-                title: 'Cancelar Pago',
-                text: '¿Está seguro que desea cancelar el pago?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, cancelar',
-                cancelButtonText: 'No, continuar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Redirige a la página de inicio si confirma cancelar
-                    window.location.href = 'servicios.html';
-                }
-            });
-        }
-    </script>
+    <script src="pago_servicio.js"></script>
 </body>
 </html>

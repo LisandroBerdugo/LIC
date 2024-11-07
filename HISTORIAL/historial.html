@@ -90,29 +90,30 @@
             setInterval(updateDateTime, 60000); // Actualizar la hora cada minuto
         });
 
-        // Función para cargar el historial de transacciones desde localStorage
-        function cargarHistorialTransacciones() {
-            
-            const transactionBody = document.getElementById('transaction-body');
-            const selectedCardIndex = localStorage.getItem('selectedCard');
-            const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`)||'[]') || [];
+// Función para cargar el historial de transacciones desde localStorage
+function cargarHistorialTransacciones() {
+    const transactionBody = document.getElementById('transaction-body');
+    const selectedCardIndex = localStorage.getItem('selectedCard');
+    const transacciones = JSON.parse(localStorage.getItem(`transacciones_${selectedCardIndex}`) || '[]') || [];
 
-            // Limpiar el contenido previo de la tabla
-            transactionBody.innerHTML = "";
+    // Limpiar el contenido previo de la tabla
+    transactionBody.innerHTML = "";
 
-            transacciones.forEach(transaccion => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>$${transaccion.saldoInicial.toFixed(2)}</td>
-                    <td>${transaccion.tipo === 'deposito' ? `$${transaccion.monto.toFixed(2)}` : ''}</td>
-                    <td>${transaccion.tipo === 'retiro' ? `$${transaccion.monto.toFixed(2)}` : ''}</td>
-                    <td>${transaccion.tipo === 'servicio' ? `$${transaccion.monto.toFixed(2)}` : ''}</td>
-                    <td>$${transaccion.saldoFinal.toFixed(2)}</td>
-                    <td>${transaccion.fecha}</td>
-                `;
-                transactionBody.appendChild(row);
-            });
-        }
+    transacciones.forEach(transaccion => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>$${Number(transaccion.saldoInicial).toFixed(2)}</td>
+            <td>${transaccion.tipo === 'deposito' ? `$${Number(transaccion.monto).toFixed(2)}` : ''}</td>
+            <td>${transaccion.tipo === 'retiro' ? `$${Number(transaccion.monto).toFixed(2)}` : ''}</td>
+            <td>${transaccion.tipo === 'servicio' ? `$${Number(transaccion.monto).toFixed(2)} (${transaccion.nombreServicio || ''})` : ''}</td>
+            <td>$${Number(transaccion.saldoFinal).toFixed(2)}</td>
+            <td>${transaccion.fecha}</td>
+        `;
+        transactionBody.appendChild(row);
+    });
+}
+
+
 
         // Función para generar la gráfica de ingresos y egresos
         function generarGraficaIngresosEgresos() {

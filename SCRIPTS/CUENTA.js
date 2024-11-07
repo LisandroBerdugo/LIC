@@ -38,6 +38,11 @@ function inicializarSaldo() {
     }
 }
 
+// Llamar a inicializarSaldo cuando se carga la página de selección de usuario o al seleccionar la tarjeta
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarSaldo();
+});
+
 // Función para obtener el saldo actual de la tarjeta seleccionada
 function obtenerSaldo() {
     
