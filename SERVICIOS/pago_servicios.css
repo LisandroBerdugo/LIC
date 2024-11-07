@@ -17,7 +17,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
 }
 
 .header {
@@ -42,22 +42,68 @@ h2 {
 .services {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
 .service-btn {
     background-color: #2980b9;
     color: white;
-    padding: 15px;
-    font-size: 18px;
+    padding: 40px;
+    font-size: 25px;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    height: 130px;
 }
 
-.service-btn:hover {
-    background-color: #1f6c8f;
+.service-btn img {
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+}
+
+.service-btn span {
+    font-weight: bold;
+    font-size: 18px;
+    text-align: left;
+}
+
+/* Ajustes específicos para cada botón */
+.services button:nth-child(1) {
+    background-image: url('../IMAGENES/pikachuv3.png');
+    background-repeat: no-repeat;
+    background-size: 120px 120px;
+    background-position: right center;
+    text-align: left;
+}
+
+.services button:nth-child(2) {
+    background-image: url('../IMAGENES/squirtlev3.png');
+    background-repeat: no-repeat;
+    background-size: 120px 120px;
+    background-position: right center;
+    text-align: left;
+}
+
+.services button:nth-child(3) {
+    background-image: url('../IMAGENES/charmanderv3.png');
+    background-repeat: no-repeat;
+    background-size: 120px 120px;
+    background-position: right center;
+    text-align: left;
+}
+
+.services button:nth-child(4) {
+    background-image: url('../IMAGENES/bulbasaurv3.png');
+    background-repeat: no-repeat;
+    background-size: 120px 120px;
+    background-position: right center;
+    text-align: left;
 }
 
 .buttons {
@@ -66,7 +112,7 @@ h2 {
 }
 
 .btn {
-    padding: 10px 20px;
+    padding: 10px 25px;
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;

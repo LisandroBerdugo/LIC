@@ -14,26 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombreServicio = urlParams.get('servicio') || 'SERVICIO';
 
     const serviciosNPE = {
-        LUZ:      { '123456': 50.00, 
-                    '123457': 75.00, 
-                    '123458': 1000.00 },
-        
-        AGUA:     { '234561': 30.00, 
-                    '234562': 45.00, 
-                    '234563': 60.00 },
-        
-        INTERNET: { '345671': 80.00, 
-                    '345672': 100.00, 
-                    '345673': 120.00 },
-        
-        TELEFONO: { '456781': 40.00, 
-                    '456782': 60.00, 
-                    '456783': 80.00 }
+        LUZ: { '123456': 50.00, '123457': 75.00, '123458': 1000.00 },
+        AGUA: { '234561': 30.00, '234562': 45.00, '234563': 60.00 },
+        INTERNET: { '345671': 80.00, '345672': 100.00, '345673': 120.00 },
+        TELEFONO: { '456781': 40.00, '456782': 60.00, '456783': 80.00 }
     };
 
     let monto = 0;
 
-    userName.textContent = obtenerNombreUsuario();
+    // Asignar el nombre de usuario desde localStorage
+    userName.textContent = localStorage.getItem('selectedCardUserName') || obtenerNombreUsuario();
+
     document.querySelector('h2').textContent = `PAGO DE ${nombreServicio.toUpperCase()}`;
     updateDateTime();
     setInterval(updateDateTime, 60000);
@@ -69,11 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function verificarNPE() {
         const npeInput = document.getElementById("npeInput").value;
-        
+
         if (serviciosNPE[nombreServicio] && serviciosNPE[nombreServicio][npeInput] !== undefined) {
             monto = serviciosNPE[nombreServicio][npeInput];
             document.getElementById("amountToPay").textContent = `$${monto.toFixed(2)}`;
-            
+
             const confirmButton = document.getElementById("confirmButton");
             confirmButton.disabled = false;
             confirmButton.classList.remove("btn-disabled");
@@ -122,46 +113,36 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.isConfirmed) {
                 imprimirTicket(nombreServicio, monto, saldoAnterior, nuevoSaldo);
             }
-            // Limpiar la pantalla de pago al finalizar la acción
             borrarTodo();
         });
     }
 
     function imprimirTicket(servicio, monto, saldoAnterior, nuevoSaldo) {
-    if (window.jspdf && window.jspdf.jsPDF) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+        if (window.jspdf && window.jspdf.jsPDF) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
 
-        // Configurar el encabezado del ticket
-        doc.setFontSize(18);
-        doc.text("Ticket de Pago", 20, 20);
-        
-        // Detalles del ticket
-        doc.setFontSize(12);
-        doc.text(`Usuario: ${obtenerNombreUsuario()}`, 20, 30);
-        doc.text(`Servicio: ${servicio}`, 20, 40);
-        doc.text(`Monto Pagado: $${monto.toFixed(2)}`, 20, 50);
-        doc.text(`Saldo Anterior: $${saldoAnterior.toFixed(2)}`, 20, 60);
-        doc.text(`Saldo Actual: $${nuevoSaldo.toFixed(2)}`, 20, 70);
+            doc.setFontSize(18);
+            doc.text("Ticket de Pago", 20, 20);
+            doc.setFontSize(12);
+            doc.text(`Usuario: ${obtenerNombreUsuario()}`, 20, 30);
+            doc.text(`Servicio: ${servicio}`, 20, 40);
+            doc.text(`Monto Pagado: $${monto.toFixed(2)}`, 20, 50);
+            doc.text(`Saldo Anterior: $${saldoAnterior.toFixed(2)}`, 20, 60);
+            doc.text(`Saldo Actual: $${nuevoSaldo.toFixed(2)}`, 20, 70);
 
-        // Obtener la fecha y hora actual
-        const now = new Date();
-        const fecha = now.toLocaleDateString();
-        const hora = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const now = new Date();
+            const fecha = now.toLocaleDateString();
+            const hora = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        doc.text(`Fecha: ${fecha}`, 20, 80);
-        doc.text(`Hora: ${hora}`, 20, 90);
-
-        // Pie de página
-        doc.text("Agencia San Salvador - POKEBANK tu mejor opción", 20, 110);
-
-        // Guardar el PDF con el nombre específico
-        doc.save(`Ticket_Pago_${servicio}.pdf`);
-    } else {
-        console.error("jsPDF no está disponible.");
+            doc.text(`Fecha: ${fecha}`, 20, 80);
+            doc.text(`Hora: ${hora}`, 20, 90);
+            doc.text("Agencia San Salvador - POKEBANK tu mejor opción", 20, 110);
+            doc.save(`Ticket_Pago_${servicio}.pdf`);
+        } else {
+            console.error("jsPDF no está disponible.");
+        }
     }
-}
-
 
     function updateDateTime() {
         const now = new Date();
@@ -230,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                borrarTodo(); // Limpiar la pantalla antes de salir
+                borrarTodo();
                 window.location.href = '../INICIO/inicio.html';
             }
         });
