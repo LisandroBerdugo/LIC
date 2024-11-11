@@ -6,10 +6,10 @@ const selectedCardIndex = localStorage.getItem('selectedCard');
 const usuarios = [
     { 
         name: 'Ash Ketchum', 
-        saldoInicial: 1000.00
+        saldoInicial: 500.00
     },
     { 
-        name: 'Misty Waterflower', 
+        name: 'Lisandro Berdugo', 
         saldoInicial: 100.00
     },
     { 

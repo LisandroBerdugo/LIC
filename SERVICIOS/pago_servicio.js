@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const userName = document.getElementById('user-name');
 
     const usuarios = [
-        { name: 'Ash Ketchum', saldoInicial: 1000.00 },
-        { name: 'Misty Waterflower', saldoInicial: 100.00 },
+        { name: 'Ash Ketchum', saldoInicial: 500.00 },
+        { name: 'Lisandro Berdugo', saldoInicial: 100.00 },
         { name: 'Brock Harrison', saldoInicial: 50.00 },
         { name: 'Gary Oak', saldoInicial: 25.00 },
         { name: 'Team Rocket', saldoInicial: 0.00 }
@@ -14,10 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombreServicio = urlParams.get('servicio') || 'SERVICIO';
 
     const serviciosNPE = {
-        LUZ: { '123456': 50.00, '123457': 75.00, '123458': 1000.00 },
-        AGUA: { '234561': 30.00, '234562': 45.00, '234563': 60.00 },
-        INTERNET: { '345671': 80.00, '345672': 100.00, '345673': 120.00 },
-        TELEFONO: { '456781': 40.00, '456782': 60.00, '456783': 80.00 }
+        LUZ: { 
+              '123451': 50.01, 
+              '123452': 75.25, 
+              '123453': 1000.00 
+        },
+        
+        AGUA: { 
+              '234561': 30.02, 
+              '234562': 45.26, 
+              '234563': 6000.00 
+        },
+        INTERNET: { 
+              '345671': 80.03, 
+              '345672': 100.27, 
+              '345673': 1200.00 
+        },
+        TELEFONO: { 
+              '456781': 40.04, 
+              '456782': 60.28, 
+              '456783': 8000.00 
+        }
     };
 
     let monto = 0;
@@ -156,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function obtenerNombreUsuario() {
         const cardInfo = {
             0: 'Ash Ketchum',
-            1: 'Misty Waterflower',
+            1: 'Lisandro Berdugo',
             2: 'Brock Harrison',
             3: 'Gary Oak',
             4: 'Team Rocket'

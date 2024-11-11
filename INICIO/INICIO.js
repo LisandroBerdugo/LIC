@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cardInfo = {
         0: { name: 'Ash Ketchum' },
-        1: { name: 'Misty Waterflower' },
+        1: { name: 'Lisandro Berdugo' },
         2: { name: 'Brock Harrison' },
         3: { name: 'Gary Oak' },
         4: { name: 'Team Rocket' }

@@ -66,7 +66,7 @@
         function mostrarNombreUsuario() {
             const cardInfo = {
                 0: 'Ash Ketchum',
-                1: 'Misty Waterflower',
+                1: 'Lisandro Berdugo',
                 2: 'Brock Harrison',
                 3: 'Gary Oak',
                 4: 'Team Rocket'
@@ -142,9 +142,9 @@
                 icon: 'success',
                 title: '¡Retiro Exitoso!',
                 text: `Se ha retirado $${cantidad.toFixed(2)} de su cuenta.`,
-                confirmButtonText: 'Sí, generar ticket',
+                confirmButtonText: 'Generar ticket',
                 showCancelButton: true,
-                cancelButtonText: 'No, regresar'
+                cancelButtonText: 'Salir'
             }).then((result) => {
                 if (result.isConfirmed) {
                     generarTicketPDF(cantidad, saldoAnterior, nuevoSaldo); // Genera el ticket con los detalles

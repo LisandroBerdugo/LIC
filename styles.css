@@ -62,17 +62,17 @@ body {
 }
 
 .card3 {
-    background-color: #f5a623;
+    background-image: url('IMAGENES/TarjetaBrock.jpg');
     transform: rotateY(144deg) translateZ(300px);
 }
 
 .card4 {
-    background-color: #d0021b;
+    background-image: url('IMAGENES/TarjetaGary.jpg');
     transform: rotateY(216deg) translateZ(300px);
 }
 
 .card5 {
-    background-color: #9013fe;
+    background-image: url('IMAGENES/TarjetaTeam.jpg');
     transform: rotateY(288deg) translateZ(300px);
 }
 
