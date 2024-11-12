@@ -63,7 +63,7 @@ document.querySelectorAll('.carousel .card').forEach((card, index) => {
     card.addEventListener('click', (event) => {
         event.preventDefault(); // Evitar la navegación inmediata
         localStorage.setItem('selectedCard', index); // Guardar el índice de la tarjeta en localStorage
-        
+
         // Mostrar mensaje de "Leyendo los datos de su tarjeta" con animación de la pokebola
         Swal.fire({
             title: 'Leyendo los datos de su tarjeta, por favor espere...',
@@ -75,9 +75,25 @@ document.querySelectorAll('.carousel .card').forEach((card, index) => {
             },
             didOpen: () => {
                 setTimeout(() => {
-                    // Después de 3 segundos, redirigir a la pantalla del PIN
-                    window.location.href = card.getAttribute('href');
-                }, 5000);
+                    // Si se hace clic en la tarjeta de "Team Rocket" (suponemos que es la última tarjeta, con índice 4)
+                    if (index === 4) {
+                        Swal.fire({
+                            title: 'Cuenta inactiva',
+                            text: 'La cuenta fue inactivada por falta de fondos',
+                            imageUrl: 'IMAGENES/TeamRocket.png', // Añade la imagen de Team Rocket
+                            imageWidth: 300, // Ajusta el tamaño de la imagen para que sea más grande
+                            imageAlt: 'Team Rocket',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        }).then(() => {
+                            // Redirigir de nuevo al index
+                            window.location.href = 'index.html';
+                        });
+                    } else {
+                        // Redirigir a la pantalla del PIN si es cualquier otra tarjeta
+                        window.location.href = card.getAttribute('href');
+                    }
+                }, 5000); // Temporizador de 5 segundos para la carga
             }
         });
     });
